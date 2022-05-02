@@ -1,6 +1,7 @@
 const webpack = require("webpack");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+//const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
+const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require("path");
 
 const config = {
@@ -12,7 +13,7 @@ const config = {
   },
   output: {
     filename: "[name].bundle.js",
-    path: __dirname + "/dist",
+    path: `${__dirname}/dist`,
   },
   module: {
     rules: [
@@ -46,6 +47,20 @@ const config = {
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
     }),
+    new WebpackPwaManifest({
+      name: "Food Event",
+      short_name: "Foodies",
+      description: "An app that allows you to view upcoming food events.",
+      background_color: "#01579b",
+      theme_color: "#ffffff",
+      fingerprints: false,
+      inject: false,
+      icons: [{
+        src: path.resolve("assets/img/icons/icon-512x512.png"),
+        sizes: [96, 128, 192, 256, 384, 512],
+        destination: path.join("assets", "icons")
+      }]
+    })
   ],
   mode: "development",
 };
